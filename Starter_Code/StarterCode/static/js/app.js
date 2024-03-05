@@ -14,7 +14,7 @@ function Plots(sample_id){
         // pull out otu_ids, otu_labels, and sample values
         otu_ids = ind_sample.otu_ids;
         otu_labels = ind_sample.otu_labels;
-        sample_values = ind_sample_array.sample_values;
+        sample_values = ind_sample.sample_values;
 
         // we only need the top 10
         otu_ids_sliced = otu_ids.slice(0,10);
@@ -24,6 +24,9 @@ function Plots(sample_id){
         otu_ids_sliced = otu_ids_sliced.reverse();
         otu_labels_sliced = otu_labels_sliced.reverse();
         sample_values_sliced = sample_values_sliced.reverse();
+
+        // add "OTU" to the out_ids
+        otu_ids_sliced = otu_ids_sliced.map(x => `OTU ${x}`);
 
         let bar_trace = {
             x: sample_values_sliced,
@@ -78,7 +81,7 @@ function init() {
 }
 
 // if a new option from the menu is selected, make the new graphs
-function optionChanged(id) {
+function update(id) {
     Plots(id);
 }
 
