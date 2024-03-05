@@ -28,6 +28,7 @@ function Plots(sample_id){
         // add "OTU" to the out_ids
         otu_ids_sliced = otu_ids_sliced.map(x => `OTU ${x}`);
 
+        //make the bar graph
         let bar_trace = {
             x: sample_values_sliced,
             y: otu_ids_sliced,
@@ -49,10 +50,47 @@ function Plots(sample_id){
         // data array
         let bar_data = [bar_trace];
 
+        // make the bubble chart
+        let bubble_trace ={
+            x: otu_ids,
+            y: sample_values,
+            mode: 'markers',
+            marker: {
+                size: sample_values,
+                color: otu_ids,
+                colorscale: 'Blackbody'
+            },
+            text: otu_labels
+
+        }
+
+        // data array
+        let bubble_data = [bubble_trace]
+
+        let bubble_layout = {
+            title: "Top Ten Bacteria Found",
+            margin: {
+              l: 100,
+              r: 100,
+              t: 100,
+              b: 100
+            }
+          };
+
         // Plot the data
         Plotly.newPlot("bar", bar_data, bar_layout);
+        Plotly.newPlot("bubble", bubble_data, bubble_layout);
 
-    })
+    });
+
+}
+
+// function to display the sample's metadata
+function show_metadata(id){
+    // get the metadata from the data file
+    metadata = data.metadata;
+    
+    // filter out the metadata for the specific id
 
 }
 
@@ -81,7 +119,7 @@ function init() {
 }
 
 // if a new option from the menu is selected, make the new graphs
-function update(id) {
+function optionChanged(id) {
     Plots(id);
 }
 
