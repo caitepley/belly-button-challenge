@@ -87,11 +87,28 @@ function Plots(sample_id){
 
 // function to display the sample's metadata
 function show_metadata(id){
+
+    d3.json(url).then(data => {
     // get the metadata from the data file
     metadata = data.metadata;
     
     // filter out the metadata for the specific id
+    let ind_metadata = metadata.filter(x => x.id == id);
+    ind_metadata = ind_metadata[0];
 
+    let metadata_box = d3.select('#sample-metadata');
+
+    // if you don't remove what's already in the box, it will just append it to what's already there
+    // so to remove what's already there, set it to an empty string
+    metadata_box.html('');
+
+
+    // add data to the box
+    Object.entries(ind_metadata).forEach(([k,v]) =>{
+        metadata_box.append('h5').text(`${k}: ${v}`);
+    });
+
+});
 }
 
 // make the default plot (id = 940) as well as populate the dropdown menu
@@ -114,13 +131,16 @@ function init() {
 
         // make the graphs for the sample
         Plots(id);
+        show_metadata(id);
 
     });
 }
 
 // if a new option from the menu is selected, make the new graphs
+// function needs to be called 'optionChanged' because that is how it appears in the HTML file
 function optionChanged(id) {
     Plots(id);
+    show_metadata(id);
 }
 
 init();
